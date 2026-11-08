@@ -16,7 +16,7 @@ import time
 import urllib.request
 import zipfile
 
-OFFICIAL = 'https://api.github.com/repos/avenoxai/avenoxbeyin/releases/latest'
+OFFICIAL = 'https://api.github.com/repos/Ahmet53535353/Beyin/releases/latest'
 MAX_PACKAGE = 32 * 1024 * 1024
 # Managed hook definitions whose change asks the client for a trust review (beyin_entry.TRUST_REVIEW).
 HOOK_FILES = ('.claude/settings.local.json', '.codex/hooks.json', '.agents/hooks.json', '.kiro/hooks/beyin-v3.json')
