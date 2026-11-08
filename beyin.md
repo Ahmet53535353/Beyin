@@ -16,7 +16,7 @@ incelemesi kullaniciya aittir.
 2. Kullanici notlarini silme, tasima, yeniden adlandirma veya `git reset` ile ezme.
 3. Var olan V1, V2 veya V3 kurulumunu once tespit et. Resmi installer ve resmi updater
    yedekleme, cakisma ve geri alma kurallarini uygular; bu kontrolleri elle atlama.
-4. Yalniz `avenoxai/avenoxbeyin` deposunun en son kararli GitHub release paketini kullan.
+4. Yalniz `Ahmet53535353/Beyin` deposunun en son kararli GitHub release paketini kullan.
    Source code arsivlerini veya ucuncu taraf paketleri kullanma.
 5. Ham notlari, kimlik bilgilerini, ozel yollari veya gizli degerleri terminal ciktisina,
    sohbete ya da dis servislere dokme.
@@ -44,15 +44,15 @@ Node, Mem0, API anahtari veya surekli calisan sunucu gerekmez.
 
 Once son kararli surumun etiketini ogren. Birinci yol GitHub API:
 
-`https://api.github.com/repos/avenoxai/avenoxbeyin/releases/latest`
+`https://api.github.com/repos/Ahmet53535353/Beyin/releases/latest`
 
 Cevaptaki `tag_name` alanini kullan; `draft` ve `prerelease` false olmalidir. API
 kimliksiz isteklerde IP basina saatlik sinir uygular. HTTP 403 veya 429 donerse API'yi
 zorlama ve surumu tahmin etme; ikinci yol olarak su adresin yonlendirmesini oku:
 
-`https://github.com/avenoxai/avenoxbeyin/releases/latest`
+`https://github.com/Ahmet53535353/Beyin/releases/latest`
 
-Bu adres `https://github.com/avenoxai/avenoxbeyin/releases/tag/vX.Y.Z` adresine
+Bu adres `https://github.com/Ahmet53535353/Beyin/releases/tag/vX.Y.Z` adresine
 yonlenir; etiket son yol parcasidir.
 
 Release kararli bir `vMAJOR.MINOR.PATCH` etiketi tasimalidir. Etiket `vX.Y.Z` ise gerekli
@@ -65,8 +65,8 @@ Surumu sabitleme ve bu satirlardaki `X.Y.Z` yer tutucusunu gercek surum sanma: i
 gercek etiketten uret. Indirme adresleri API cevabindaki `browser_download_url`
 alanlaridir; yonlendirme yolunu kullandiysan ayni adresler su kaliptadir:
 
-`https://github.com/avenoxai/avenoxbeyin/releases/download/vX.Y.Z/beyin-v3-X.Y.Z.zip`
-`https://github.com/avenoxai/avenoxbeyin/releases/download/vX.Y.Z/beyin-v3-X.Y.Z.zip.sha256`
+`https://github.com/Ahmet53535353/Beyin/releases/download/vX.Y.Z/beyin-v3-X.Y.Z.zip`
+`https://github.com/Ahmet53535353/Beyin/releases/download/vX.Y.Z/beyin-v3-X.Y.Z.zip.sha256`
 
 Ikisini HTTPS ile isletim sisteminin gecici klasorune indir. SHA-256 dosyasindaki ilk
 alani ZIP'in yerel SHA-256 degeriyle karsilastir. Eslesme yoksa dur, arsivi acma ve
@@ -94,7 +94,7 @@ runner'i elle degistirmisse installer `Customized legacy runner requires review 
 mesajiyla 1 cikis kodu dondurur. O dosyayi silme veya ezme; icerigini kisaca ozetle,
 kullanicinin acik onayini al ve ancak o zaman tek dosya icin
 `--accept-customized-legacy <vault-goreli-yol>` kullan. Toplu gecis yoktur. Ayrintilar:
-`https://github.com/avenoxai/avenoxbeyin/blob/main/docs/v3/MIGRATION.md`
+`https://github.com/Ahmet53535353/Beyin/blob/main/docs/v3/MIGRATION.md`
 
 ### 3b. `.beyin-version` zaten `3.` ile basliyorsa: kurulu updater
 
@@ -161,7 +161,7 @@ guven adimi yoktur; vault klasorunde OMP acilinca `.omp/hooks/pre/beyin-v3.ts` h
 yuklenir. Hermes Agent kullaniliyorsa installer eklenti dosyalarini vault icine yazar,
 ancak baglanti icin `hermes plugins enable beyin-v3` ve yeniden baslatma adimlari
 kullaniciya aittir; adimlar
-`https://github.com/avenoxai/avenoxbeyin/blob/main/docs/v3/HERMES.md` icindedir.
+`https://github.com/Ahmet53535353/Beyin/blob/main/docs/v3/HERMES.md` icindedir.
 Kiro IDE 1.x veya CLI V3 kullaniliyorsa vault'u ac, Agent Hooks panelinde veya
 CLI `/hooks` ekraninda Beyin tanimlarini incele ve yeni oturum baslat.
 Pi kullaniliyorsa vault klasorunde Pi'yi ac, `.pi/extensions/beyin-v3.ts` dosyasini
@@ -203,7 +203,7 @@ baska bir sey yapma. Kullanici acikca istemedikce acma, API anahtari isteme veya
 gundeme getirme.
 
 Kullanici isterse kurulu `.agents/skills/beyin/SKILL.md` icindeki Jev bolumunu ve
-`https://github.com/avenoxai/avenoxbeyin/blob/main/docs/v3/JEV.md` adimlarini uygula
+`https://github.com/Ahmet53535353/Beyin/blob/main/docs/v3/JEV.md` adimlarini uygula
 (kurulu pakette `docs/` klasoru yoktur). Anahtar `TYPESAFE_API_KEY` ortam degiskeninde
 durur; Markdown'a, surum kontrolune veya komut argumanina yazilmaz. `jev` komutu anahtar
 kabul etmez ve yazdirmaz. `env_file` kullanilacaksa mutlak yol gerekir. Kural 5 geregi
@@ -236,7 +236,7 @@ Ajanin ag veya dosya yetkisi gercekten yetersizse, kullaniciyi su sayfaya yonlen
 
 Sayfadaki V3 ZIP dugmesi GitHub'daki en son kararli resmi release paketine ve SHA-256
 dosyasina goturur; ayni paketler dogrudan
-`https://github.com/avenoxai/avenoxbeyin/releases/latest` sayfasinda da durur. Manuel
+`https://github.com/Ahmet53535353/Beyin/releases/latest` sayfasinda da durur. Manuel
 kurulumdan sonra vault kokunde `<python> beyin.py update --check` ile surumun guncel
 oldugunu dogrula. Bu yol otomatik kurulumun yerine gecen son care yoludur; ilk tercih
 degildir.
