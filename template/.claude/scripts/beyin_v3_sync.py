@@ -992,11 +992,8 @@ class SyncEngine:
                     for ref in event['refs']:
                         self.store._source(ref)
                     row = db.execute('SELECT payload FROM receipts WHERE id=?', (event['event_id'],)).fetchone()
-                    if row:
-                        previous = json.loads(row[0])
-                        if (previous['summary'], previous['refs'], previous.get('links')) != (event['summary'], event['refs'], event.get('links')):
-                            raise ReceiptConflict('event id collision during recovery')
-                    db.execute('INSERT OR IGNORE INTO receipts VALUES (?,?)', (event['event_id'], _json(event)))
+                    # Editable receipts: the journal intent replaces the indexed copy.
+                    db.execute('INSERT OR REPLACE INTO receipts VALUES (?,?)', (event['event_id'], _json(event)))
                 completed.append(entry)
             except (ValueError, OSError, KeyError, NoteConflict) as exc:
                 conflicts.append({'journal': entry.name, 'reason': str(exc)})
@@ -1053,18 +1050,31 @@ class SyncEngine:
         return event
 
     def _scan_receipts(self, db):
-        """Re-index receipt sources missing from local state, e.g. after a state reset or on a new device."""
+        """Re-index receipt sources missing from local state, e.g. after a state reset or on a new device.
+
+        Receipt files are editable sources: a changed file replaces the indexed
+        copy and regenerated views follow from the new payload.
+        """
         try:
             receipts_dir = self._path('receipts')
             if not receipts_dir.is_dir():
                 return [], []
-            # Every new source, local or synced from another device, is a new directory entry and
-            # changes this signature; a fresh state has none stored. Warm syncs stop at one stat.
+            # Directory mtime does not change when an existing file is edited, so the
+            # warm-sync signature must cover each receipt file's own size and mtime.
+            names = sorted(os.listdir(receipts_dir))
+            parts = []
+            for name in names:
+                if not re.fullmatch(r'[0-9a-f]{64}\.md', name, re.IGNORECASE):
+                    continue
+                try:
+                    st = (receipts_dir / name).stat()
+                    parts.append(f'{name}:{st.st_size}:{st.st_mtime_ns}')
+                except OSError:
+                    parts.append(f'{name}:unreadable')
             stat = receipts_dir.stat()
-            signature = f'{stat.st_dev}:{stat.st_ino}:{stat.st_mtime_ns}'
+            signature = f'{stat.st_dev}:{stat.st_ino}:{stat.st_mtime_ns}:' + ','.join(parts)
             if db.execute("SELECT 1 FROM metadata WHERE key='receipt_scan_signature' AND value=?", (signature,)).fetchone():
                 return [], []
-            names = sorted(os.listdir(receipts_dir))
         except (ValueError, OSError) as exc:
             return [{'source': 'receipts', 'reason': str(exc)}], []
         warnings, conflicts = [], []
@@ -1082,12 +1092,10 @@ class SyncEngine:
             try:
                 event = self._receipt_event(rel)
                 if name in known:
-                    # Indexed receipts stay authoritative, but a source that no longer matches them means
-                    # another device wrote the same event_id and a merge kept its file (#205).
+                    # Receipt files are editable: a changed source replaces the indexed copy.
                     old = known[name]
                     if (old['summary'], old['refs'], old.get('links')) != (event['summary'], event['refs'], event.get('links')):
-                        conflicts.append({'source': rel, 'kind': 'receipt_divergence',
-                                          'reason': 'receipt source differs from indexed receipt; event_id reused on another device'})
+                        db.execute('INSERT OR REPLACE INTO receipts VALUES (?,?)', (event['event_id'], _json(event)))
                     continue
                 db.execute('INSERT OR IGNORE INTO receipts VALUES (?,?)', (event['event_id'], _json(event)))
             except (ValueError, OSError, UnicodeError) as exc:
@@ -1588,9 +1596,11 @@ class SyncEngine:
                 row = (_json(old),)
             if row:
                 old = json.loads(row[0])
-                if old['summary'] != summary or old['refs'] != refs or old.get('links', []) != links:
-                    raise ReceiptConflict('event id collision')
-                event = old
+                # Receipts are editable: keep the original creation stamp, apply the new summary.
+                event['created_at'] = old.get('created_at') or event.get('created_at')
+                if session is None and old.get('session'):
+                    event['session'] = old['session']
+                event['harness'] = old.get('harness', harness)
             receipt_metadata = {'kind': 'receipt', 'event_id': event_id, **_receipt_harness(event), 'refs': refs, 'visibility': 'internal'}
             if links:
                 receipt_metadata['links'] = links
@@ -1601,9 +1611,10 @@ class SyncEngine:
             content = render(receipt_metadata, summary + '\n')
             path = self._path(source)
             if path.exists():
-                # Byte comparison: universal-newline text would call a '\r' summary a manual change.
+                # Receipt files are editable: replace via journal with the current hash.
+                old_hash = _hash(path.read_bytes())
                 if path.read_bytes() != content.encode('utf-8'):
-                    raise ReceiptConflict('receipt source manually changed')
+                    self._intent(source, old_hash, content, 'receipt', event)
             else:
                 self._intent(source, None, content, 'receipt', event)
         result = self.sync()

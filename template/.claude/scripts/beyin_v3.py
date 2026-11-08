@@ -1261,10 +1261,12 @@ class MemoryStore:
             old = db.execute("SELECT payload FROM receipts WHERE id=?", (event_id,)).fetchone()
             if old:
                 previous = json.loads(old[0])
-                if (previous["summary"], previous["refs"], previous.get("links")) != (summary, event["refs"], event.get("links")):
-                    raise ReceiptConflict("event_id reused with different payload")
-                event = previous
-            db.execute("INSERT OR IGNORE INTO receipts VALUES (?,?)", (event_id, payload))
+                # Receipts are editable: preserve creation metadata, apply new summary/refs/links.
+                for key in ('created_at', 'session'):
+                    if previous.get(key) and key not in event:
+                        event[key] = previous[key]
+                payload = _json(event)
+            db.execute('INSERT OR REPLACE INTO receipts VALUES (?,?)', (event_id, payload))
         return dict(event, id=event_id, status="succeeded")
 
     def retrieve(self, query, project=None, audience="internal", statuses=None, limit=5, budget_chars=8000, strict=False, today=None, explicit=False):
