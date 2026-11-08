@@ -18,12 +18,10 @@ import urllib.parse
 import urllib.request
 sys.dont_write_bytecode = True
 
-OFFICIAL = 'https://api.github.com/repos/avenoxai/avenoxbeyin/releases/latest'
-WEB = 'https://github.com/avenoxai/avenoxbeyin/releases/'
-# Exact official repository slugs. A GitHub rename (avenoxai/avenoxbeyin -> avenoxai/beyin)
-# keeps the old API URL working through a redirect, but the API then reports asset URLs under
-# the new name. Both names are accepted, nothing broader: the old name must never be recreated.
-OFFICIAL_WEBS = tuple('https://github.com/' + slug + '/releases/' for slug in ('avenoxai/avenoxbeyin', 'avenoxai/beyin'))
+OFFICIAL = 'https://api.github.com/repos/Ahmet53535353/Beyin/releases/latest'
+WEB = 'https://github.com/Ahmet53535353/Beyin/releases/'
+# Exact fork repository slug. Only the fork's stable releases are accepted, nothing broader.
+OFFICIAL_WEBS = tuple('https://github.com/' + slug + '/releases/' for slug in ('Ahmet53535353/Beyin',))
 MAX_PACKAGE = 32 * 1024 * 1024
 DAY = 86400
 FRESH = 7 * DAY
