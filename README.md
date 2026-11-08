@@ -4,7 +4,7 @@ Claude Code, Codex, Google Antigravity veya Kiro ile kullanabileceğin yerel iki
 
 Python **3.11 veya üzeri** yeterli. Git, pip, Mem0 hesabı, API anahtarı veya sürekli açık sunucu gerekmez. Kullandığın AI istemcisinin kendi kurulumu ve hesabı ayrı olarak gerekir.
 
-> **V3.12.0:** Yakala birden çok bağlantıyı ve isteğe bağlı pencere görüntüsünü birlikte kaydediyor; Windows dinleyicisi geçici hatalardan toparlanıyor, tarayıcı adres okuma desteği genişliyor. Aynı makinedeki ajanlar için hash kontrollü `note-read` / `note-edit`, yerel hafıza denetimi (`audit`), öğrenim adayları (`learn`) ve isteğe bağlı düz günlük düzeni geldi. Mevcut kurulumda vault içinde `python3 beyin.py update` çalıştır; yakala kullanıyorsan ardından bir kez `python3 beyin.py yakala kur`. [Sürüm notları](docs/v3/releases/3.12.0.md) · [Yakala](docs/v3/YAKALA.md) · [Güncelleme rehberi](docs/v3/UPDATE.md).
+> **V3.12.1:** Fork yayını (Ahmet53535353/Beyin). Güncelleme artık fork release'inden çekiyor; `python3 beyin.py update` ile kendi fork'undan güncelle. [Sürüm notları](docs/v3/releases/3.12.1.md) · [Yakala](docs/v3/YAKALA.md) · [Güncelleme rehberi](docs/v3/UPDATE.md).
 
 ## En kolay kurulum: bir klasör, bir mesaj
 
@@ -20,7 +20,7 @@ Görsel anlatım, kopyalanabilir mesaj ve manuel indirme: **[avenox.lol/ikincibe
 
 ## Manuel kurulum
 
-1. [Son kararlı sürüm sayfasını](https://github.com/avenoxai/avenoxbeyin/releases/latest) aç. **`beyin-v3-X.Y.Z.zip`** dosyasını ve yanındaki SHA-256 dosyasını indir (`X.Y.Z` sayfadaki sürüm numarasıdır). GitHub'ın otomatik “Source code” arşivi yerine bu paketi seç.
+1. [Son kararlı sürüm sayfasını](https://github.com/Ahmet53535353/Beyin/releases/latest) aç. **`beyin-v3-X.Y.Z.zip`** dosyasını ve yanındaki SHA-256 dosyasını indir (`X.Y.Z` sayfadaki sürüm numarasıdır). GitHub'ın otomatik “Source code” arşivi yerine bu paketi seç.
 2. Obsidian'da bir vault oluştur veya mevcut vault klasörünü seç. Notlarını başka yere taşıman gerekmez.
 3. Açtığın paket klasöründe terminal aç ve vault yolunu kendi klasörünle değiştir:
 
@@ -149,7 +149,7 @@ Yeni sürüm kontrolü varsayılan olarak açıktır: oturum başında ayrı bir
 
 Windows'ta `python3` yerine `py -3` kullan. V3.0.2 kurulumunda yeni seçenekler ilk `update` işleminden sonra gelir.
 
-Varsayılan kaynak yalnız resmi GitHub **stable release** paketidir; geliştirme dalından kendiliğinden kod çekmez. Paket yayınlanmamışsa veya erişilemiyorsa hata bildirir, güncellenmiş gibi davranmaz. İndirilmiş ZIP ile çevrimdışı güncelleme ve geri alma için [güncelleme rehberi](docs/v3/UPDATE.md).
+Varsayılan kaynak fork `Ahmet53535353/Beyin` GitHub **stable release** paketidir; geliştirme dalından kendiliğinden kod çekmez. Paket yayınlanmamışsa veya erişilemiyorsa hata bildirir, güncellenmiş gibi davranmaz. İndirilmiş ZIP ile çevrimdışı güncelleme ve geri alma için [güncelleme rehberi](docs/v3/UPDATE.md).
 
 ## V2'den geliyorsan
 
